@@ -101,6 +101,20 @@ class SinglyLinkedListTest {
     }
 
     @Test
+    @DisplayName("Test list is empty after dequeue ")
+    void dequeue2() {
+        String[] arr = {"1", "2", "3", "4"};
+        for (var el: arr) {
+            list.enqueue(el);
+        }
+        var size = list.size();
+        for (int i = 0; i < size; i++) {
+            list.dequeue();
+        }
+        assertTrue(list.isEmpty());
+    }
+
+    @Test
     void push() {
         String element = "#1";
         list.push(element);
@@ -126,6 +140,23 @@ class SinglyLinkedListTest {
 
         assertEquals(elements[elements.length-1], list.pop());
         assertEquals(elements.length-1, list.size());
+    }
+
+    @Test
+    @DisplayName("Test push - pop")
+    void pop3() {
+        String[] elements = {"#1", "#2", "#3"};
+        for (var el: elements) {
+            list.push(el);
+        }
+
+        String[] test = new String[list.size()];
+
+        int i = list.size();
+        for (var el : list) {
+            test[--i] = el;
+        }
+        assertArrayEquals(elements, test);
     }
 
     @Test
