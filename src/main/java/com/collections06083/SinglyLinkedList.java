@@ -5,6 +5,18 @@ import java.util.NoSuchElementException;
 
 public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
 
+    public static void main(String[] args) {
+        var list = new SinglyLinkedList<Integer>();
+        list.push(4);
+        list.push(3);
+        list.push(2);
+        list.push(1);
+
+        for (var el: list) {
+            System.out.println(el);
+        }
+    }
+
     private static class Node<V> {
         V value;
         Node<V> next;
@@ -21,18 +33,32 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
 
     private int size = 0;
     private final Node<T> head = new Node<T>();
+    private  Node<T> tail = head;
 
     private void addToHead(T value) {
         head.next = new Node<T>(value, head.next);
         size++;
     }
 
-    private void addToTail(T value) {}
-
-    private T getFromHead(){
-        return null;
+    private void addToTail(T value) {
     }
 
+    private T getFromHead() {
+        throwsWhenEmpty();
+        var res = head.next.value;
+        head.next = head.next.next;
+        size--;
+        if (size == 0) {
+            tail = head;
+        }
+        return res;
+    }
+
+    private void throwsWhenEmpty() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("The collection is empty");
+        }
+    }
 
     @Override
     public int size() {
@@ -41,7 +67,9 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
 
     @Override
     public void clear() {
-        // TODO:
+        head.next = head;
+        tail = head;
+        size = 0;
     }
 
     @Override
@@ -66,17 +94,35 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
 
     @Override
     public T peek() {
-        // TODO:
-        return null;
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return null;
+        throwsWhenEmpty();
+        return head.next.value;
     }
 
     @Override
     public void add(T value) {
-        // TODO:
+        addToHead(value);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new HeadToTailIterator();
+    }
+
+    private class HeadToTailIterator implements Iterator<T>{
+        Node<T> cursor = head;
+
+        @Override
+        public boolean hasNext() {
+            return cursor.next != head;
+        }
+
+        @Override
+        public T next() {
+            if(!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            cursor = cursor.next;
+            return cursor.value;
+        }
     }
 }
