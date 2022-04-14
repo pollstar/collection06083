@@ -7,13 +7,15 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
 
     public static void main(String[] args) {
         var list = new SinglyLinkedList<Integer>();
-        list.push(4);
-        list.push(3);
-        list.push(2);
-        list.push(1);
+        list.enqueue(0);
+        list.enqueue(1);
+        list.enqueue(2);
+        list.enqueue(3);
 
-        for (var el: list) {
-            System.out.println(el);
+
+        var size = list.size();
+        for (var i = 0 ; i < size; i++) {
+            System.out.println(list.dequeue());
         }
     }
 
@@ -32,15 +34,22 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
     }
 
     private int size = 0;
-    private final Node<T> head = new Node<T>();
+    private final Node<T> head = new Node<>();
     private  Node<T> tail = head;
 
     private void addToHead(T value) {
-        head.next = new Node<T>(value, head.next);
+        head.next = new Node<>(value, head.next);
+        if (size == 0) {
+            tail = head.next;
+        }
         size++;
     }
 
     private void addToTail(T value) {
+        var next = tail;
+        tail = new Node<>(value, head);
+        next.next = tail;
+        size++;
     }
 
     private T getFromHead() {
