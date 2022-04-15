@@ -14,7 +14,18 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
 
 
         var size = list.size();
-        for (var i = 0 ; i < size; i++) {
+        for (var i = 0; i < size; i++) {
+            System.out.println(list.dequeue());
+        }
+
+        System.out.println();
+        list.enqueue(0);
+        list.enqueue(1);
+        list.enqueue(2);
+        list.enqueue(3);
+        list.reverse();
+        size = list.size();
+        for (var i = 0; i < size; i++) {
             System.out.println(list.dequeue());
         }
     }
@@ -35,7 +46,7 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
 
     private int size = 0;
     private final Node<T> head = new Node<>();
-    private  Node<T> tail = head;
+    private Node<T> tail = head;
 
     private void addToHead(T value) {
         head.next = new Node<>(value, head.next);
@@ -117,7 +128,7 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
         return new HeadToTailIterator();
     }
 
-    private class HeadToTailIterator implements Iterator<T>{
+    private class HeadToTailIterator implements Iterator<T> {
         Node<T> cursor = head;
 
         @Override
@@ -127,11 +138,33 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
 
         @Override
         public T next() {
-            if(!hasNext()) {
+            if (!hasNext()) {
                 throw new NoSuchElementException();
             }
             cursor = cursor.next;
             return cursor.value;
         }
+    }
+
+    public void reverse() {
+        if (isEmpty()) {
+            return;
+        }
+
+        Node<T> cursor = head.next,
+                prev = head,
+                next = cursor.next;
+
+        do {
+            cursor.next = prev;
+            prev = cursor;
+            cursor = next;
+            next = cursor.next;
+        }while (cursor != head);
+        head.next = prev;
+    }
+
+    public void remove() {
+        // TODO
     }
 }

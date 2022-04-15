@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +16,7 @@ class SinglyLinkedListTest {
     SinglyLinkedList<String> list;
 
     @BeforeEach
-    void setUp () {
+    void setUp() {
         list = new SinglyLinkedList<>();
     }
 
@@ -67,19 +69,19 @@ class SinglyLinkedListTest {
     @DisplayName("Test size after enqueue ")
     void enqueue1() {
         String[] arr = {"1", "2", "3", "4"};
-        for (var el: arr) {
+        for (var el : arr) {
             list.enqueue(el);
         }
         assertEquals(list.size(), arr.length);
         list.enqueue("4");
-        assertEquals(list.size(), arr.length+1);
+        assertEquals(list.size(), arr.length + 1);
     }
 
     @Test
     @DisplayName("Test elements enqueue dequeue")
     void enqueue2() {
         String[] arr = {"1", "2", "3", "4"};
-        for (var el: arr) {
+        for (var el : arr) {
             list.enqueue(el);
         }
         for (int i = 0; i < list.size(); i++) {
@@ -91,20 +93,20 @@ class SinglyLinkedListTest {
     @DisplayName("Test size after dequeue ")
     void dequeue() {
         String[] arr = {"1", "2", "3", "4"};
-        for (var el: arr) {
+        for (var el : arr) {
             list.enqueue(el);
         }
         list.dequeue();
-        assertEquals(list.size(), arr.length-1);
+        assertEquals(list.size(), arr.length - 1);
         list.dequeue();
-        assertEquals(list.size(), arr.length-2);
+        assertEquals(list.size(), arr.length - 2);
     }
 
     @Test
     @DisplayName("Test list is empty after dequeue ")
     void dequeue2() {
         String[] arr = {"1", "2", "3", "4"};
-        for (var el: arr) {
+        for (var el : arr) {
             list.enqueue(el);
         }
         var size = list.size();
@@ -125,7 +127,7 @@ class SinglyLinkedListTest {
     @Test
     void pop() {
         String[] elements = {"#1", "#2", "#3"};
-        for (var el: elements) {
+        for (var el : elements) {
             list.push(el);
         }
         assertEquals(elements.length, list.size());
@@ -134,19 +136,19 @@ class SinglyLinkedListTest {
     @Test
     void pop2() {
         String[] elements = {"#1", "#2", "#3"};
-        for (var el: elements) {
+        for (var el : elements) {
             list.push(el);
         }
 
-        assertEquals(elements[elements.length-1], list.pop());
-        assertEquals(elements.length-1, list.size());
+        assertEquals(elements[elements.length - 1], list.pop());
+        assertEquals(elements.length - 1, list.size());
     }
 
     @Test
     @DisplayName("Test push - pop")
     void pop3() {
         String[] elements = {"#1", "#2", "#3"};
-        for (var el: elements) {
+        for (var el : elements) {
             list.push(el);
         }
 
@@ -195,7 +197,7 @@ class SinglyLinkedListTest {
     @Test
     @DisplayName("Test exception after peek when list is empty")
     void peek4() {
-        var exception = assertThrows(NoSuchElementException.class,()-> list.peek());
+        var exception = assertThrows(NoSuchElementException.class, () -> list.peek());
         assertEquals("The collection is empty", exception.getMessage());
     }
 
@@ -203,7 +205,7 @@ class SinglyLinkedListTest {
     @DisplayName("Test exception after peek when list is not empty")
     void peek5() {
         list.push("1");
-        assertDoesNotThrow(()->{
+        assertDoesNotThrow(() -> {
             list.peek();
         });
     }
@@ -218,5 +220,41 @@ class SinglyLinkedListTest {
 
     @Test
     void add() {
+    }
+
+    @Test
+    @DisplayName("Test reverse with elements")
+    void reverse1() {
+        List<String> elements = List.of("#1", "#2", "#3");
+        for (var el : elements) {
+            list.push(el);
+        }
+        list.reverse();
+        int count = 0;
+        for (Iterator<String> it1 = elements.iterator(), it2 = list.iterator();
+             it1.hasNext() && it2.hasNext();
+        ) {
+            count++;
+            assertEquals(it1.next(), it2.next());
+        }
+        assertEquals(elements.size(), count);
+        assertEquals(elements.size(), list.size());
+    }
+
+    @Test
+    @DisplayName("Test reverse empty item")
+    void reverse2() {
+        list.reverse();
+        assertEquals(0, list.size());
+    }
+
+    @Test
+    @DisplayName("Test reverse list with one item")
+    void reverse3() {
+        String s = "#1";
+        list.enqueue(s);
+        list.reverse();
+        assertEquals(1, list.size());
+        assertEquals(s, list.dequeue());
     }
 }
