@@ -151,9 +151,9 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
             return;
         }
 
-        Node<T> cursor = head.next,
-                prev = head,
-                next = cursor.next;
+        var cursor = head.next;
+        var prev = head;
+        var next = cursor.next;
 
         do {
             cursor.next = prev;
