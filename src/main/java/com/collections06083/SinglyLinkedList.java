@@ -160,11 +160,22 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
             prev = cursor;
             cursor = next;
             next = cursor.next;
-        }while (cursor != head);
+        } while (cursor != head);
         head.next = prev;
     }
 
-    public void remove() {
-        // TODO
+    public void remove(int index) {
+        if (index < 0 || index >= size()) {
+            throw new IllegalArgumentException("Index value is out of range");
+        }
+
+        int i = 0;
+        var h = head;
+        while (i != index) {
+            h = h.next;
+            i++;
+        }
+        h.next = h.next.next;
+        size--;
     }
 }

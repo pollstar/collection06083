@@ -117,7 +117,7 @@ class SinglyLinkedListTest {
     }
 
     @Test
-    void push() {
+    void push1() {
         String element = "#1";
         list.push(element);
 
@@ -125,7 +125,8 @@ class SinglyLinkedListTest {
     }
 
     @Test
-    void pop() {
+    @DisplayName("Test size after push three elements")
+    void push2() {
         String[] elements = {"#1", "#2", "#3"};
         for (var el : elements) {
             list.push(el);
@@ -256,5 +257,51 @@ class SinglyLinkedListTest {
         list.reverse();
         assertEquals(1, list.size());
         assertEquals(s, list.dequeue());
+    }
+
+    @Test
+    @DisplayName("Remove from empty list")
+    void remove1() {
+        var exception = assertThrows(IllegalArgumentException.class, () -> list.remove(0));
+        assertEquals("Index value is out of range", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Remove element")
+    void remove2() {
+        List<String> elements = List.of("#1", "#2", "#3");
+        for (var el : elements) {
+            list.push(el);
+        }
+        list.remove(1);
+        assertEquals(elements.get(2), list.pop());
+        assertEquals(elements.get(0), list.pop());
+        assertEquals(0, list.size());
+    }
+
+    @Test
+    @DisplayName("Remove element with index 0")
+    void remove3() {
+        List<String> elements = List.of("#1", "#2", "#3");
+        for (var el : elements) {
+            list.push(el);
+        }
+        list.remove(0);
+        assertEquals(elements.get(1), list.pop());
+        assertEquals(elements.get(0), list.pop());
+        assertEquals(0, list.size());
+    }
+
+    @Test
+    @DisplayName("Remove last element")
+    void remove4() {
+        List<String> elements = List.of("#1", "#2", "#3");
+        for (var el : elements) {
+            list.push(el);
+        }
+        list.remove(list.size() -1);
+        assertEquals(elements.get(2), list.pop());
+        assertEquals(elements.get(1), list.pop());
+        assertEquals(0, list.size());
     }
 }
