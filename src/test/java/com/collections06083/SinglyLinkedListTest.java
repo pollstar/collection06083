@@ -304,4 +304,70 @@ class SinglyLinkedListTest {
         assertEquals(elements.get(1), list.pop());
         assertEquals(0, list.size());
     }
+
+    @Test
+    @DisplayName("Remove element over iterator ")
+    void remove5() {
+        List<String> elements = List.of("#1", "#2", "#3");
+        for (var el : elements) {
+            list.push(el);
+        }
+
+        String s = new String();
+        for (var el = list.iterator(); el.hasNext(); ) {
+            s = el.next();
+            if (s.equals(elements.get(1))) {
+                el.remove();
+            }
+        }
+
+        assertEquals(2, list.size());
+        assertEquals(elements.get(2), list.pop());
+        assertEquals(elements.get(0), list.pop());
+        assertEquals(0, list.size());
+    }
+
+    @Test
+    @DisplayName("Remove element over iterator with one element")
+    void remove6() {
+        String el = "#1";
+        list.push(el);
+
+        String s = new String();
+        for (var l = list.iterator(); l.hasNext(); ) {
+            s = l.next();
+            if (s.equals(el)) {
+                l.remove();
+            }
+        }
+
+        assertEquals(0, list.size());
+        var exception = assertThrows(NoSuchElementException.class, () -> list.pop());
+        assertEquals("The collection is empty", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Test throw IllegalStateException")
+    void remove7() {
+        String el = "#1";
+        list.push(el);
+
+        var l = list.iterator();
+
+        assertEquals(1, list.size());
+        var exception = assertThrows(IllegalStateException.class, () -> l.remove());
+        assertEquals("remove", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Test throw IllegalStateException")
+    void remove8() {
+        list.push("1");
+        list.pop();
+        var l = list.iterator();
+
+        assertEquals(0, list.size());
+        var exception = assertThrows(IllegalStateException.class, () -> l.remove());
+        assertEquals("remove", exception.getMessage());
+    }
 }

@@ -130,6 +130,8 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
 
     private class HeadToTailIterator implements Iterator<T> {
         Node<T> cursor = head;
+        Node<T> prev = head;
+        private boolean flagNextByCall = false;
 
         @Override
         public boolean hasNext() {
@@ -141,8 +143,23 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
+
+            prev = cursor;
             cursor = cursor.next;
+            flagNextByCall = true;
             return cursor.value;
+        }
+
+        @Override
+        public void remove() {
+            if (!flagNextByCall) {
+                throw new IllegalStateException("remove");
+            }
+            flagNextByCall = false;
+
+            prev.next =  cursor.next;
+            cursor = prev.next;
+            size--;
         }
     }
 
