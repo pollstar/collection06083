@@ -35,7 +35,10 @@ public class DoublyLinkedList<T> implements Deque<T> {
 
     @Override
     public void addLast(T value) {
-        // TODO
+        var oldLast = head.prev;
+        var newLast = new Node<>(value, head, oldLast);
+        head.prev = newLast;
+        oldLast.next = newLast;
         size++;
     }
 
@@ -55,9 +58,15 @@ public class DoublyLinkedList<T> implements Deque<T> {
     @Override
     public T getLast() {
         throwsWhenEmpty();
-        // TODO
+
+        var secondNode = head.prev;
+        var firstNode = secondNode.prev;
+
+        head.prev = firstNode;
+        firstNode.next = head;
+
         size--;
-        return null;
+        return secondNode.value;
     }
 
     @Override
@@ -96,7 +105,7 @@ public class DoublyLinkedList<T> implements Deque<T> {
     private class DirectIterator implements ListIterator<T> {
         @Override
         public boolean hasNext() {
-            return false;
+            return size > 0;
         }
 
         @Override
