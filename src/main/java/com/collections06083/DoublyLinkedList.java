@@ -197,12 +197,19 @@ public class DoublyLinkedList<T> implements Deque<T> {
     }
 
     public void reverse() {
-        var first = head.next;
-        var last = head.prev;
-        head.next = last;
-        last.prev = head;
-        head.prev = first;
-        first.next = head;
+        throwsWhenEmpty();
+
+        var cursor = head;
+        var next = cursor.next;
+        var prev = cursor.prev;
+
+        do {
+            cursor.prev = next;
+            cursor.next = prev;
+            cursor = next;
+            next = cursor.next;
+            prev = cursor.prev;
+        } while (cursor != head);
     }
 
     private void throwsWhenEmpty() {

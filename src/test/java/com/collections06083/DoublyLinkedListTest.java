@@ -1,8 +1,11 @@
 package com.collections06083;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -103,14 +106,58 @@ class DoublyLinkedListTest {
     }
 
     @Test
+    @DisplayName("Test peekFirst")
     void peekFirst() {
+        String[] elements = new String[]{"#1", "#2", "#3", "#4"};
+        for (var el : elements) {
+            list.addFirst(el);
+        }
+        assertEquals(list.peekFirst(), elements[elements.length - 1]);
     }
 
     @Test
+    @DisplayName("Test throw in empty list for peekFirst")
+    void peekFirstEmptyList() {
+        assertEquals(0, list.size());
+        var exception = assertThrows(NoSuchElementException.class, () -> list.peekFirst());
+        assertEquals("The collection is empty", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Test peekLast")
     void peekLast() {
+        assertEquals(0, list.size());
+        var exception = assertThrows(NoSuchElementException.class, () -> list.peekLast());
+        assertEquals("The collection is empty", exception.getMessage());
     }
 
     @Test
     void size() {
+    }
+
+
+    @Test
+    @DisplayName("Test reverse DoublyLinkedList")
+    void reverse1() {
+        String[] elements = new String[]{"#1", "#2", "#3", "#4"};
+        for (var el : elements) {
+            list.addFirst(el);
+        }
+
+        list.reverse();
+
+        for (var el: elements) {
+            assertEquals(list.getFirst(), el);
+        }
+    }
+
+    @Test
+    @DisplayName("Test reverse DoublyLinkedList with one element")
+    void reverse2() {
+        String el = "1";
+        list.addFirst(el);
+
+        list.reverse();
+        assertEquals(list.getFirst(), el);
     }
 }

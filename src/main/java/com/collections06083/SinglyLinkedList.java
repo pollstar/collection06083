@@ -164,9 +164,7 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
     }
 
     public void reverse() {
-        if (isEmpty()) {
-            return;
-        }
+        throwsWhenEmpty();
 
         var cursor = head.next;
         var prev = head;
