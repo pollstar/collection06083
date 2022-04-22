@@ -158,7 +158,7 @@ public class SinglyLinkedList<T> implements Stack<T>, Queue<T> {
             flagNextByCall = false;
 
             prev.next = cursor.next;
-            cursor = prev.next;
+            cursor = prev;
             size--;
         }
     }

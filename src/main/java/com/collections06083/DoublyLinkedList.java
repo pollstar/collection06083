@@ -103,24 +103,40 @@ public class DoublyLinkedList<T> implements Deque<T> {
     }
 
     private class DirectIterator implements ListIterator<T> {
+        DoublyLinkedList.Node<T> cursor = head;
+        DoublyLinkedList.Node<T> prev = head.prev;
+        DoublyLinkedList.Node<T> next = head.next;
+        private boolean flagNextByCall = false;
+        private boolean flagPreviousByCall = false;
+
         @Override
         public boolean hasNext() {
-            return size > 0;
+            return cursor.next != head;
         }
 
         @Override
         public T next() {
-            return null;
+            if (!hasNext()) {
+                throw new NoSuchElementException("No next element");
+            }
+            prev = cursor;
+            cursor = cursor.next;
+            next = cursor.next;
+            return cursor.value;
         }
 
         @Override
         public boolean hasPrevious() {
-            return false;
+            return cursor.prev != head;
         }
 
         @Override
         public T previous() {
-            return null;
+            if (!hasPrevious()) {
+                throw new NoSuchElementException("No previous element");
+            }
+            cursor = cursor.prev;
+            return cursor.value;
         }
 
         @Override
@@ -135,7 +151,17 @@ public class DoublyLinkedList<T> implements Deque<T> {
 
         @Override
         public void remove() {
+            if (!flagNextByCall || !flagPreviousByCall) {
+                throw new IllegalStateException("remove");
+            }
+            flagPreviousByCall = false;
 
+            if (flagNextByCall) {
+                flagNextByCall = false;
+                prev.next = cursor.next;
+                cursor = prev.next;
+            }
+            size--;
         }
 
         @Override
@@ -145,8 +171,10 @@ public class DoublyLinkedList<T> implements Deque<T> {
 
         @Override
         public void add(T t) {
-
+            flagNextByCall = false;
+            flagPreviousByCall = false;
         }
+
     }
 
     private class ReverseIterator implements ListIterator<T> {

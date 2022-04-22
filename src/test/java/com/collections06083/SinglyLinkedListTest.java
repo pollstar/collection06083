@@ -299,15 +299,15 @@ class SinglyLinkedListTest {
         for (var el : elements) {
             list.push(el);
         }
-        list.remove(list.size() -1);
+        list.remove(list.size() - 1);
         assertEquals(elements.get(2), list.pop());
         assertEquals(elements.get(1), list.pop());
         assertEquals(0, list.size());
     }
 
     @Test
-    @DisplayName("Remove element over iterator ")
-    void remove5() {
+    @DisplayName("Remove one element over iterator ")
+    void remove_Iterator1() {
         List<String> elements = List.of("#1", "#2", "#3");
         for (var el : elements) {
             list.push(el);
@@ -327,9 +327,55 @@ class SinglyLinkedListTest {
         assertEquals(0, list.size());
     }
 
+
+    @Test
+    @DisplayName("Remove some elements over iterator ")
+    void remove_Iterator5() {
+        List<String> elements = List.of("#1", "#2", "#3");
+        for (var el : elements) {
+            list.push(el);
+        }
+
+        String s = new String();
+        for (var el = list.iterator(); el.hasNext(); ) {
+            s = el.next();
+            if (s.equals(elements.get(1)) || s.equals(elements.get(2))) {
+                el.remove();
+            }
+        }
+
+        assertEquals(1, list.size());
+        assertEquals(elements.get(0), list.pop());
+        assertEquals(0, list.size());
+    }
+
+
+    @Test
+    @DisplayName("Remove odd Integer elements over iterator ")
+    void remove_Iterator6() {
+        SinglyLinkedList<Integer> elements = new SinglyLinkedList<>();
+        for (int i = 0; i < 20; i++) {
+            elements.push(i);
+        }
+        int size = elements.size();
+
+        for (var el = elements.iterator(); el.hasNext(); ) {
+            if (el.next() % 2 != 0) {
+                el.remove();
+            }
+        }
+
+        for (var el : elements) {
+            System.out.println(el);
+            assertTrue(el % 2 == 0);
+        }
+
+        assertEquals(elements.size(), size / 2);
+    }
+
     @Test
     @DisplayName("Remove element over iterator with one element")
-    void remove6() {
+    void remove_Iterator2() {
         String el = "#1";
         list.push(el);
 
@@ -348,7 +394,7 @@ class SinglyLinkedListTest {
 
     @Test
     @DisplayName("Test throw IllegalStateException")
-    void remove7() {
+    void remove_Iterator3() {
         String el = "#1";
         list.push(el);
 
@@ -360,8 +406,8 @@ class SinglyLinkedListTest {
     }
 
     @Test
-    @DisplayName("Test throw IllegalStateException")
-    void remove8() {
+    @DisplayName("Test throw IllegalStateException for remove in iterator")
+    void remove_Iterator4() {
         list.push("1");
         list.pop();
         var l = list.iterator();
