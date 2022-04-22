@@ -19,25 +19,35 @@ class CustomHashMapTest {
     void size() {
         assertEquals(0, map.size());
 
-        int count = 100;
+        int count = 1000;
         for (var i = 0; i < count; i++) {
             map.put(i, i);
         }
         assertEquals(count, map.size());
 
-        for (var i = count; i < count + 100; i++) {
+        for (var i = count; i < count + count; i++) {
             map.put(i, i);
         }
-        assertEquals(count + 100, map.size());
+        assertEquals(count + count, map.size());
     }
 
     @Test
     void put() {
-        for (var i = 0; i < 100; i++) {
+        int count = 1000;
+
+        for (var i = 0; i < count; i++) {
             map.put(i, i);
         }
 
-        for (var i = 0; i < 100; i++) {
+        for (var i = 0; i < count; i++) {
+            assertEquals(i, map.get(i));
+        }
+
+        for (var i = count; i < count + count; i++) {
+            map.put(i, i);
+        }
+
+        for (var i = 0; i < count+count; i++) {
             assertEquals(i, map.get(i));
         }
     }
@@ -70,17 +80,19 @@ class CustomHashMapTest {
 
     @Test
     void remove() {
-        for (var i = 0; i < 100; i++) {
+        int count = 1000;
+
+        for (var i = 0; i < count; i++) {
             map.put(i, i);
         }
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < count; i++) {
             if (i % 2 == 0) {
                 map.remove(i);
             }
         }
 
-        for (var i = 0; i < 100; i++) {
+        for (var i = 0; i < count; i++) {
             if (i % 2 == 0) {
                 assertFalse(map.contains(i));
             }
@@ -89,7 +101,7 @@ class CustomHashMapTest {
             }
         }
 
-        for (var i = 0; i < 100; i++) {
+        for (var i = 0; i < count; i++) {
             if (i % 2 == 0) {
                 assertNull(map.get(i));
             }

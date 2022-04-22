@@ -92,7 +92,7 @@ class CustomHashMap<K, V> implements Map<K, V> {
             if (node.hash == hash && node.key.equals(key)) {
                 V v = node.getValue();
                 if (node == prev) {
-                   bins[bin] = node.next;
+                    bins[bin] = node.next;
                 } else {
                     prev.next = node.next;
                 }
